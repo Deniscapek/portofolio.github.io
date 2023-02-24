@@ -1,73 +1,66 @@
-$(document).ready(function () {
-  $(window).scroll(function () {
-    // sticky navbar on scroll script
-    if (this.scrollY > 20) {
-      $(".navbar").addClass("sticky");
-    } else {
-      $(".navbar").removeClass("sticky");
+$(function () {
+
+    function get_ramadhan_time() {
+        return new Date("Maret 22, 2023 17:37:00").getTime();
     }
 
-    // scroll-up button show/hide script
-    if (this.scrollY > 500) {
-      $(".scroll-up-btn").addClass("show");
-    } else {
-      $(".scroll-up-btn").removeClass("show");
+    function get_current_time() {
+        return new Date().getTime();
     }
-  });
 
-  // slide-up script
-  $(".scroll-up-btn").click(function () {
-    $("html").animate({ scrollTop: 0 });
-    // removing smooth scroll on slide-up button click
-    $("html").css("scrollBehavior", "auto");
-  });
+    function update_time(updated_time) {
+        let updated_time_string = format_to_string(updated_time);
+        let remaining_time = $("#remaining_time");
+        remaining_time.html(updated_time_string);
+    }
 
-  $(".navbar .menu li a").click(function () {
-    // applying again smooth scroll on menu items click
-    $("html").css("scrollBehavior", "smooth");
-  });
+    function calculate() {
+        // get ramadhan time
+        let ramadhan_time = get_ramadhan_time();
+        // get current time
+        let current_time = get_current_time();
+        // calculate the remaining time
+        let remaining_time = Math.floor(ramadhan_time - current_time);
 
-  // toggle menu/navbar script
-  $(".menu-btn").click(function () {
-    $(".navbar .menu").toggleClass("active");
-    $(".menu-btn i").toggleClass("active");
-  });
+        let remaining_time_in_seconds = Math.floor(remaining_time / 1000);
 
-  // typing text animation script
-  var typed = new Typed(".typing", {
-    strings: ["Student", "Developer", "Gamer"],
-    typeSpeed: 100,
-    backSpeed: 60,
-    loop: true,
-  });
+        let day = Math.floor(remaining_time_in_seconds / (24 * 60 * 60));
+        let remainder_hours = Math.floor(remaining_time_in_seconds % (24 * 60 * 60));
 
-  var typed = new Typed(".typing-2", {
-    strings: ["Fast Respon", "Smart", "Many Features"],
-    typeSpeed: 100,
-    backSpeed: 60,
-    loop: true,
-  });
+        let hours = Math.floor(remainder_hours / (60 * 60));
+        let remainder_minutes = Math.floor(remainder_hours % (60 * 60));
 
-  // owl carousel script
-  $(".carousel").owlCarousel({
-    margin: 20,
-    loop: true,
-    autoplay: true,
-    autoplayTimeOut: 2000,
-    autoplayHoverPause: true,
-    responsive: {
-      0: {
-        items: 1,
-        nav: false,
-      },
-      600: {
-        items: 2,
-        nav: false,
-      },
-      1000: {
-        items: 3,
-        nav: false,
-      },
-    },
-  });
+        let minutes = Math.floor(remainder_minutes / 60);
+        let remainder_seconds = Math.floor(remainder_minutes % 60);
+
+        let seconds = remainder_seconds;
+
+        let updated_time = {
+            day: day,
+            hours: hours,
+            minutes: minutes,
+            seconds: seconds
+        }
+
+        return updated_time;
+    }
+
+    function format_to_string(updated_time) {
+        let updated_time_string = `
+        ${updated_time.day}H :
+        ${updated_time.hours}J :
+        ${updated_time.minutes}M :
+        ${updated_time.seconds}D
+        `;
+
+        return updated_time_string;
+    }
+
+    function execute() {
+        let updated_time = calculate();
+        update_time(updated_time);
+    }
+
+    setInterval(execute, 1000);
+
 });
