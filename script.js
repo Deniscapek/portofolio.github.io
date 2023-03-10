@@ -47,9 +47,9 @@ $(function () {
 
     function format_to_string(updated_time) {
         let updated_time_string = `
-        ${updated_time.day}H :
-        ${updated_time.hours} :
-        ${updated_time.minutes} :
+        ${updated_time.day}:
+        ${updated_time.hours}:
+        ${updated_time.minutes}:
         ${updated_time.seconds}
         `;
 
