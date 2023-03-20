@@ -1,7 +1,7 @@
 $(function () {
 
     function get_ramadhan_time() {
-        return new Date("Maret 22, 2023 17:37:00").getTime();
+        return new Date("Maret 23, 2023 00:00:00").getTime();
     }
 
     function get_current_time() {
